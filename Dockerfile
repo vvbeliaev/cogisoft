@@ -5,7 +5,6 @@ FROM node:24-alpine AS builder
 
 WORKDIR /app
 
-# Native build deps for better-sqlite3 (only used in this stage)
 RUN apk add --no-cache python3 make g++ \
     && corepack enable \
     && corepack prepare pnpm@latest --activate
@@ -19,9 +18,6 @@ COPY public ./public
 
 RUN pnpm build
 
-# Deploy only prod dependencies (resolves pnpm symlink issues in multi-stage builds)
-RUN pnpm deploy --filter=. --prod --legacy /prod
-
 # ---- Runtime stage ----
 FROM node:24-alpine AS runtime
 
@@ -32,9 +28,15 @@ ENV NODE_ENV=production \
     PORT=4321 \
     SQLITE_DB_PATH=/data/cogisoft.db
 
-COPY --from=builder /prod/node_modules ./node_modules
+# Need build tools for better-sqlite3 native compilation
+RUN apk add --no-cache python3 make g++ \
+    && corepack enable \
+    && corepack prepare pnpm@latest --activate
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod
+
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./package.json
 
 RUN mkdir -p /data
 VOLUME ["/data"]
