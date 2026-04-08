@@ -1,4 +1,8 @@
 ---
+/**
+ * CodeWindow — Raycast-inspired window chrome for the hero.
+ * See /DESIGN.md § Hero / code block.
+ */
 interface Props {
   title?: string;
 }
@@ -9,141 +13,115 @@ const lines = [
   {
     number: "01",
     tokens: [
-      { text: "import", class: "text-secondary" },
-      { text: " { ", class: "text-base-content/80" },
+      { text: "import", class: "text-accent" },
+      { text: " { ", class: "text-foreground/70" },
       { text: "Agency", class: "text-primary" },
-      { text: " } ", class: "text-base-content/80" },
-      { text: "from", class: "text-secondary" },
-      { text: " '@cogito/core'", class: "text-accent" },
-      { text: ";", class: "text-base-content/80" },
+      { text: " } ", class: "text-foreground/70" },
+      { text: "from", class: "text-accent" },
+      { text: " '@cogito/core'", class: "text-[#24a148]" },
+      { text: ";", class: "text-foreground/70" },
     ],
   },
   { number: "02", tokens: [] },
   {
     number: "03",
     tokens: [
-      { text: "const", class: "text-primary" },
-      { text: " product ", class: "text-warning" },
-      { text: "= ", class: "text-base-content/80" },
-      { text: "new ", class: "text-secondary" },
-      { text: "Agency", class: "text-warning" },
-      { text: ".Project({", class: "text-base-content/80" },
+      { text: "const", class: "text-accent" },
+      { text: " product ", class: "text-foreground" },
+      { text: "= ", class: "text-foreground/70" },
+      { text: "new ", class: "text-accent" },
+      { text: "Agency", class: "text-primary" },
+      { text: ".Project({", class: "text-foreground/70" },
     ],
   },
   {
     number: "04",
     indent: true,
     tokens: [
-      { text: "vision: ", class: "text-base-content/80" },
-      { text: "'uncompromised'", class: "text-success" },
-      { text: ",", class: "text-base-content/80" },
+      { text: "vision: ", class: "text-foreground/70" },
+      { text: "'uncompromised'", class: "text-[#24a148]" },
+      { text: ",", class: "text-foreground/70" },
     ],
   },
   {
     number: "05",
     indent: true,
     tokens: [
-      { text: "velocity: ", class: "text-base-content/80" },
-      { text: "'7_days'", class: "text-success" },
-      { text: ",", class: "text-base-content/80" },
+      { text: "velocity: ", class: "text-foreground/70" },
+      { text: "'7_days'", class: "text-[#24a148]" },
+      { text: ",", class: "text-foreground/70" },
     ],
   },
   {
     number: "06",
     indent: true,
     tokens: [
-      { text: "ownership: ", class: "text-base-content/80" },
-      { text: "true", class: "text-success" },
+      { text: "ownership: ", class: "text-foreground/70" },
+      { text: "true", class: "text-[#24a148]" },
     ],
   },
   {
     number: "07",
-    tokens: [{ text: "});", class: "text-base-content/80" }],
+    tokens: [{ text: "});", class: "text-foreground/70" }],
   },
   { number: "08", tokens: [] },
   {
     number: "09",
     tokens: [
-      { text: "product", class: "text-warning" },
-      { text: ".launch();", class: "text-base-content/80" },
+      { text: "product", class: "text-foreground" },
+      { text: ".launch();", class: "text-foreground/70" },
     ],
   },
 ];
 ---
 
 <div
-  class="overflow-hidden relative z-10 card-terminal transform -rotate-1 hover:rotate-0 transition-all duration-700 group shadow-2xl shadow-primary/10"
+  class="code-window surface-lift raised-whisper overflow-hidden relative group"
 >
-  <!-- Window Header -->
+  <!-- Window chrome -->
   <div
-    class="flex items-center gap-2 px-6 py-4 border-b-2 border-base-content/10 bg-base-200/40"
+    class="flex items-center gap-2 px-5 py-3 border-b"
+    style="border-color: color-mix(in oklch, var(--foreground), transparent 90%);"
   >
     <div class="flex gap-1.5">
-      <div
-        class="w-3 h-3 rounded-full bg-error/80 shadow-[0_0_8px_rgba(239,68,68,0.3)]"
-      >
-      </div>
-      <div
-        class="w-3 h-3 rounded-full bg-warning/80 shadow-[0_0_8px_rgba(245,158,11,0.3)]"
-      >
-      </div>
-      <div
-        class="w-3 h-3 rounded-full bg-success/80 shadow-[0_0_8px_rgba(34,197,94,0.3)]"
-      >
-      </div>
+      <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+      <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+      <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
     </div>
-    <div
-      class="ml-auto text-[10px] text-base-content/30 font-mono tracking-[0.2em] uppercase"
-    >
+    <div class="ml-auto label-mono">
       {title}
     </div>
   </div>
 
-  <!-- Code Area -->
-  <div class="relative bg-neutral/1 backdrop-blur-md">
-    <div
-      class="absolute inset-0 bg-linear-to-br from-primary/5 to-secondary/5 pointer-events-none"
-    >
-    </div>
-
-    <div class="font-mono text-[13px] leading-relaxed p-8 relative z-10 space-y-0">
+  <!-- Code area -->
+  <div class="relative">
+    <div class="font-mono text-[13px] leading-[1.7] py-6 relative z-10">
       {
         lines.map((line) => (
-          <div class="grid grid-cols-[3rem_1fr] group/line hover:bg-base-content/3 transition-colors relative">
-            <span class="text-base-content/10 select-none tabular-nums text-right pr-6 py-0.5 border-r border-base-content/5">
+          <div class="grid grid-cols-[3rem_1fr] group/line">
+            <span class="text-foreground/20 select-none tabular-nums text-right pr-5 py-0.5">
               {line.number}
             </span>
             <div
-              class={`flex items-center whitespace-pre py-0.5 ${line.indent ? "pl-8" : "pl-6"}`}
+              class={`flex items-center whitespace-pre py-0.5 pr-6 ${line.indent ? "pl-6" : "pl-0"}`}
             >
               {line.tokens.length > 0 ? (
                 line.tokens.map((token) => (
                   <span class={token.class}>{token.text}</span>
                 ))
               ) : (
-                <span class="h-6" />
+                <span class="h-5" />
               )}
             </div>
-
-            <!-- Line hover highlight bar -->
-            <div class="absolute inset-y-0 left-0 w-0.5 bg-primary opacity-0 group-hover/line:opacity-100 transition-opacity" />
           </div>
         ))
       }
     </div>
   </div>
-
-  <!-- Scanline Effect -->
-  <div class="absolute inset-0 pointer-events-none bg-scanlines opacity-[0.03]">
-  </div>
 </div>
 
 <style>
-  .card-terminal {
-    background: linear-gradient(
-      135deg,
-      var(--color-base-100) 0%,
-      var(--color-base-200) 100%
-    );
+  .code-window {
+    border-radius: 12px;
   }
 </style>

@@ -1,39 +1,14 @@
 ---
-// No script needed for static SVG background
+/**
+ * Background — ambient canvas layer.
+ * Quiet Plex-inspired editorial grid fading to parchment. No blur blobs,
+ * no scanlines, no industrial noise — the content is the performer.
+ * See /DESIGN.md § Atmosphere.
+ */
 ---
 
 <div
-  class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-base-100"
+  class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-background"
 >
-  <!-- Base: anodized / brushed metal -->
-  <div class="absolute inset-0 bg-brushed"></div>
-
-  <!-- Ambient wash: tungsten + amber + moss -->
-  <div
-    class="absolute inset-0 bg-linear-to-b from-base-100 via-primary/5 to-secondary/10 opacity-45"
-  >
-  </div>
-  <div
-    class="absolute -top-40 -right-40 w-[800px] h-[800px] bg-primary/10 blur-3xl"
-  >
-  </div>
-  <div
-    class="absolute -bottom-56 -left-56 w-[900px] h-[900px] bg-secondary/10 blur-3xl"
-  >
-  </div>
-
-  <!-- Engineering grid -->
-  <div class="absolute inset-0 bg-grid-pattern"></div>
-  <div
-    class="absolute inset-0 bg-grid-tech opacity-80 mask-[radial-gradient(circle_at_50%_30%,black,transparent_70%)]"
-  >
-  </div>
-
-  <!-- Terminal feel -->
-  <div class="absolute inset-0 bg-scanlines"></div>
-  <div class="absolute inset-0 bg-vignette opacity-80"></div>
-
-  <!-- Noise Texture -->
-  <div class="absolute inset-0 bg-noise pointer-events-none">
-  </div>
+  <div class="absolute inset-0 grid-subtle opacity-60"></div>
 </div>

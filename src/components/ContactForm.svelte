@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { Send, CheckCircle, Loader2 } from "lucide-svelte";
-
-  import { pb } from "$lib/pb";
+  import Send from "~icons/ph/paper-plane-tilt-fill";
+  import CheckCircle from "~icons/ph/check-circle-fill";
+  import Loader2 from "~icons/ph/circle-notch-bold";
+  import { actions } from "astro:actions";
 
   let isSubmitting = $state(false);
   let formSubmitted = $state(false);
@@ -17,11 +18,19 @@
     errorMessage = "";
 
     try {
-      await pb
-        .collection("leads")
-        .create({ name, email, message, experiment: "agency-contact" });
+      const { error } = await actions.createLead({
+        name,
+        email,
+        message,
+        experiment: "agency-contact",
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
       formSubmitted = true;
-    } catch (error) {
+    } catch (err) {
       errorMessage = "Something went wrong. Please try again.";
     } finally {
       isSubmitting = false;
@@ -37,90 +46,150 @@
 </script>
 
 {#if formSubmitted}
-  <!-- Success State -->
-  <div class="flex flex-col items-center justify-center py-16 text-center">
+  <div
+    class="py-14 text-center"
+    style="animation: cg-fade-up 0.5s cubic-bezier(0.2,0.8,0.2,1) forwards;"
+  >
     <div
-      class="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center mb-6 animate-pulse"
+      class="inline-flex items-center justify-center w-14 h-14 mb-6 text-primary"
+      style="box-shadow: rgba(201,100,66,0.18) 0 0 0 1px;"
     >
-      <CheckCircle class="w-10 h-10 text-success" />
+      <CheckCircle class="w-7 h-7" />
     </div>
-    <h2 class="text-2xl md:text-3xl font-bold mb-3">Message sent!</h2>
-    <p class="text-base-content/70 mb-8 max-w-md">
-      Thank you for reaching out. We'll get back to you within 24 hours.
+    <div class="label-accent mb-3">message received</div>
+    <p class="text-foreground/60 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
+      I'll reply within 24 hours on business days.
     </p>
-    <button type="button" class="btn btn-outline btn-sm" onclick={resetForm}>
-      Send another message
+    <button
+      onclick={resetForm}
+      class="text-xs font-mono uppercase tracking-widest text-foreground/40 hover:text-foreground transition-colors"
+    >
+      Send another →
     </button>
   </div>
 {:else}
-  <!-- Form -->
-  <form class="space-y-5" onsubmit={handleSubmit}>
-    <div class="form-control">
-      <p class="text-xs text-base-content/70 mb-1">
-        EMAIL <span class="text-error">*</span>
-      </p>
-      <label class="input pb-1 w-full" for="email">
-        <!-- <span class="label text-xs uppercase tracking-wider opacity-70"></span> -->
-        <input
-          id="email"
-          type="text"
-          placeholder="your@email.com"
-          class="bg-base-100/50 border-base-content/10 focus:border-primary focus:bg-base-100 transition-all placeholder:opacity-40"
-          bind:value={email}
-          required
-        />
+  <form onsubmit={handleSubmit} novalidate class="flex flex-col gap-5">
+
+    <div class="flex flex-col gap-2">
+      <label for="email" class="label-mono">
+        Email <span class="text-primary">*</span>
       </label>
+      <input
+        id="email"
+        type="email"
+        placeholder="your@email.com"
+        bind:value={email}
+        required
+        class="cg-input"
+      />
     </div>
 
-    <div class="">
-      <div class="form-control">
-        <label class="label pb-1" for="name">
-          <span class="label-text text-xs uppercase tracking-wider opacity-70"
-            >Name</span
-          >
-        </label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Your name"
-          class="w-full input bg-base-100/50 border-base-content/10 focus:border-primary focus:bg-base-100 transition-all placeholder:opacity-40"
-          bind:value={name}
-        />
-      </div>
+    <div class="flex flex-col gap-2">
+      <label for="name" class="label-mono">Name</label>
+      <input
+        id="name"
+        type="text"
+        placeholder="Your name"
+        bind:value={name}
+        class="cg-input"
+      />
     </div>
 
-    <div class="form-control">
-      <label class="label pb-1 block" for="message">
-        <span class="label-text text-xs uppercase tracking-wider opacity-70"
-          >Message</span
-        >
-      </label>
+    <div class="flex flex-col gap-2">
+      <label for="message" class="label-mono">Message</label>
       <textarea
         id="message"
-        class="w-full textarea bg-base-100/50 border-base-content/10 focus:border-primary focus:bg-base-100 transition-all placeholder:opacity-40 min-h-32 resize-none"
         placeholder="Tell us about your project..."
         bind:value={message}
+        rows={5}
+        class="cg-input"
+        style="padding-top: 0.75rem; padding-bottom: 0.75rem; resize: none; line-height: 1.6;"
       ></textarea>
     </div>
 
     {#if errorMessage}
-      <div class="alert alert-error text-sm">
-        <span>{errorMessage}</span>
-      </div>
+      <p class="text-sm text-destructive">{errorMessage}</p>
     {/if}
 
     <button
       type="submit"
-      class="btn btn-primary w-full gap-2 mt-2"
-      disabled={isSubmitting}
+      disabled={isSubmitting || !email}
+      class="cg-submit"
     >
       {#if isSubmitting}
-        <Loader2 class="w-4 h-4 animate-spin" />
-        Sending...
+        <span class="flex items-center gap-2">
+          <Loader2 class="w-4 h-4 animate-spin" />
+          Sending...
+        </span>
+        <span></span>
       {:else}
-        Send Message
+        <span>Send message</span>
         <Send class="w-4 h-4" />
       {/if}
     </button>
+
   </form>
 {/if}
+
+<style>
+  :global(.cg-input) {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 0.875rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--foreground);
+    background: var(--background);
+    border: 1px solid rgba(20, 20, 19, 0.15);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  :global([data-theme="DARK"] .cg-input) {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  :global(.cg-input:focus) {
+    border-color: var(--cg-terracotta);
+  }
+
+  :global(.cg-input::placeholder) {
+    color: color-mix(in oklch, var(--foreground), transparent 65%);
+  }
+
+  :global(textarea.cg-input) {
+    height: auto;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    resize: none;
+    line-height: 1.6;
+  }
+
+  .cg-submit {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--cg-ivory);
+    background: var(--cg-terracotta);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-top: 0.25rem;
+  }
+
+  .cg-submit:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  .cg-submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+</style>

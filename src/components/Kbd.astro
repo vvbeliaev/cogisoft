@@ -1,0 +1,13 @@
+---
+/**
+ * Kbd — Raycast-inspired keyboard key cap.
+ * See /DESIGN.md § Character primitives.
+ */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<kbd class="kbd-cap">{label}</kbd>

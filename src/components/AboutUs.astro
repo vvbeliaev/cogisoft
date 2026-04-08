@@ -2,7 +2,8 @@
 import { Image } from "astro:assets";
 import AvatarVB from "$assets/images/bw-2.jpeg";
 import AvatarDS from "$assets/images/dima.png";
-import { Github, Linkedin, Twitter, Globe, FileText } from "@lucide/astro";
+import { Icon } from "astro-icon/components";
+import SectionLabel from "$components/SectionLabel.astro";
 
 const team = [
   {
@@ -33,57 +34,45 @@ const team = [
   },
 ];
 
-const platformIcons: Record<string, any> = {
-  github: Github,
-  linkedin: Linkedin,
-  twitter: Twitter,
-  cv: FileText,
-  default: Globe,
+const platformIcons: Record<string, string> = {
+  github: "ph:github-logo-fill",
+  linkedin: "ph:linkedin-logo-fill",
+  twitter: "ph:x-logo-fill",
+  cv: "ph:file-text-duotone",
+  default: "ph:globe-duotone",
 };
 ---
 
-<section id="about" class="py-10 md:py-20 relative overflow-hidden">
-  <div class="container mx-auto px-6 lg:px-24 relative z-10">
-    <div class="mb-16">
-      <h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-        Who's Building <br class="hidden md:block" /> Your Vision?
-      </h2>
-      <div class="h-1 w-20 bg-primary rounded-full"></div>
+<section id="about" class="py-16 md:py-24 relative">
+  <div class="container mx-auto px-6">
+    <div class="mb-16 max-w-2xl">
+      <SectionLabel index="01" text="team" />
+      <h2 class="mt-6">Who's building <br />your vision?</h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {
         team.map((member) => (
-          <div class="group card-riveted p-0 bg-base-200/40 hover:bg-base-200/60 transition-all duration-500 overflow-hidden border-primary/5 hover:border-primary/20">
-            <span class="rivet-accent top-3 left-3 opacity-20" />
-            <span class="rivet-accent top-3 right-3 opacity-20" />
-            <span class="rivet-accent bottom-3 left-3 opacity-20" />
-            <span class="rivet-accent bottom-3 right-3 opacity-20" />
-
+          <div class="group surface-lift overflow-hidden transition-opacity hover:opacity-95">
             <div class="flex flex-col md:flex-row h-full">
               <div class="md:w-2/5 relative overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
                 <Image
                   src={member.image}
                   alt={member.name}
-                  class="w-full h-full object-cover aspect-square md:aspect-auto transform group-hover:scale-105 transition-transform duration-700"
+                  class="w-full h-full object-cover aspect-square md:aspect-auto transform group-hover:scale-[1.02] transition-transform duration-700"
                 />
-                <div class="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
-              <div class="md:w-3/5 p-8 flex flex-col justify-center bg-base-100/30 backdrop-blur-sm">
+              <div class="md:w-3/5 p-8 flex flex-col justify-center">
                 <div class="mb-6">
-                  <h3 class="text-2xl font-bold mb-1 tracking-tight">
-                    {member.name}
-                  </h3>
-                  <p class="text-primary font-mono text-xs uppercase tracking-[0.2em]">
-                    {member.role}
-                  </p>
+                  <h3 class="mb-1">{member.name}</h3>
+                  <p class="label-accent">{member.role}</p>
                 </div>
 
-                <ul class="space-y-3 mb-8">
+                <ul class="space-y-2.5 mb-8">
                   {member.highlights.map((highlight) => (
-                    <li class="flex items-start gap-3 text-sm text-base-content/70 leading-snug">
-                      <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                    <li class="flex items-start gap-3 text-[14px] text-foreground/70 leading-relaxed">
+                      <span class="w-1 h-1 rounded-full bg-primary mt-2 shrink-0" />
                       {highlight}
                     </li>
                   ))}
@@ -91,17 +80,17 @@ const platformIcons: Record<string, any> = {
 
                 <div class="flex gap-4">
                   {member.socials.map((social) => {
-                    const Icon =
+                    const iconName =
                       platformIcons[social.platform] || platformIcons.default;
                     return (
                       <a
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="text-base-content/30 hover:text-primary transition-all hover:-translate-y-0.5"
+                        class="text-foreground/40 hover:text-primary transition-colors"
                         aria-label={`${member.name}'s ${social.platform}`}
                       >
-                        <Icon class="w-5 h-5" />
+                        <Icon name={iconName} class="w-4 h-4" />
                       </a>
                     );
                   })}
@@ -112,15 +101,5 @@ const platformIcons: Record<string, any> = {
         ))
       }
     </div>
-  </div>
-
-  <!-- Subtle background decoration instead of dotted grid -->
-  <div
-    class="absolute inset-0 bg-linear-to-tr from-primary/5 via-transparent to-secondary/5 -z-10"
-  >
-  </div>
-  <div
-    class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(var(--color-primary-rgb),0.02),transparent_70%)] -z-10"
-  >
   </div>
 </section>

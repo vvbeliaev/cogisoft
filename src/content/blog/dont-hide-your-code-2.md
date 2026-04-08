@@ -55,7 +55,7 @@ console.log(`Trust level: ${myTrustScore * 100}%`);
 
 #### 4. Images & Media
 
-![Growplex](../../assets/growplex.png)
+![Growplex](../../assets/labs/growplex.png)
 _Figure 1: Our Growplex project, built with full transparency._
 
 #### 5. Math (if supported)

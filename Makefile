@@ -1,9 +1,15 @@
-b:
+.PHONY: build up down logs dev
+
+build:
 	docker compose -f compose.local.yml build
 
 up:
 	docker compose -f compose.local.yml up -d
 
-make dev:
-	make b
-	make up
+down:
+	docker compose -f compose.local.yml down
+
+logs:
+	docker compose -f compose.local.yml logs -f
+
+dev: build up

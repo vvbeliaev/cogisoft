@@ -1,24 +1,27 @@
 ---
 import Root from "$layouts/Root.astro";
 import AboutUs from "$components/AboutUs.astro";
-import { ArrowLeft } from "@lucide/astro";
+import SectionLabel from "$components/SectionLabel.astro";
+import { Icon } from "astro-icon/components";
 ---
 
 <Root path="/about" title="About Us | Cogito Software">
-  <main class="relative min-h-screen pt-20 md:pt-32 pb-8 md:pb-16">
-    <div class="container mx-auto px-6 mb-12">
+  <main class="relative min-h-screen pt-28 md:pt-40 pb-16 md:pb-24">
+    <div class="container mx-auto px-6 mb-16">
       <a
         href="/"
-        class="inline-flex items-center gap-2 text-base-content/60 hover:text-primary transition-colors mb-8 group font-mono text-sm uppercase tracking-widest"
+        class="inline-flex items-center gap-2 label-mono hover:text-foreground transition-colors mb-10 group"
       >
-        <ArrowLeft
-          class="w-4 h-4 group-hover:-translate-x-1 transition-transform"
+        <Icon
+          name="ph:arrow-left"
+          class="w-3 h-3 group-hover:-translate-x-1 transition-transform"
         />
-        Back to Home
+        back to home
       </a>
 
-      <h1 class="text-4xl md:text-6xl font-bold mb-6">Our Team</h1>
-      <p class="text-xl text-base-content/60 max-w-2xl font-light">
+      <SectionLabel index="00" text="who we are" accent />
+      <h1 class="mt-6 mb-6">Our team.</h1>
+      <p class="body-editorial max-w-2xl">
         We are a small team of engineers and product builders dedicated to
         creating high-utility software that matters.
       </p>
@@ -27,39 +30,30 @@ import { ArrowLeft } from "@lucide/astro";
     <AboutUs />
 
     <div class="container mx-auto px-6 mt-24">
-      <div class="card-riveted p-12 bg-base-200/25 border-primary/10">
-        <span class="rivet-accent top-4 left-4"></span>
-        <span class="rivet-accent top-4 right-4"></span>
-        <span class="rivet-accent bottom-4 left-4"></span>
-        <span class="rivet-accent bottom-4 right-4"></span>
-
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-3xl font-bold mb-6">Our Philosophy</h2>
-          <p
-            class="text-lg text-base-content/70 leading-relaxed font-light mb-8"
-          >
-            We believe that software should be a tool for empowerment, not a
-            source of dependency. That's why we prioritize full code ownership,
-            local-first architectures, and extreme transparency in every project
-            we undertake.
-          </p>
-          <div class="flex-col md:flex-row flex justify-center gap-4">
-            <div
-              class="px-6 py-3 border border-base-content/10 bg-base-100/40 text-sm font-mono uppercase tracking-tighter"
-            >
-              No Vendor Lock-in
-            </div>
-            <div
-              class="px-6 py-3 border border-base-content/10 bg-base-100/40 text-sm font-mono uppercase tracking-tighter"
-            >
-              Pure Architecture
-            </div>
-            <div
-              class="px-6 py-3 border border-base-content/10 bg-base-100/40 text-sm font-mono uppercase tracking-tighter"
-            >
-              Rapid Delivery
-            </div>
-          </div>
+      <div class="max-w-3xl mx-auto text-center surface-lift p-12 md:p-16">
+        <SectionLabel text="philosophy" />
+        <h2 class="mt-6 mb-8">Our philosophy.</h2>
+        <p class="body-editorial max-w-2xl mx-auto mb-10">
+          We believe that software should be a tool for empowerment, not a
+          source of dependency. That's why we prioritize full code ownership,
+          local-first architectures, and extreme transparency in every project
+          we undertake.
+        </p>
+        <div class="flex flex-col md:flex-row justify-center gap-3">
+          {
+            [
+              "No Vendor Lock-in",
+              "Pure Architecture",
+              "Rapid Delivery",
+            ].map((tag) => (
+              <span
+                class="px-5 py-2.5 label-mono surface-lift"
+                style="border-radius: 0;"
+              >
+                {tag}
+              </span>
+            ))
+          }
         </div>
       </div>
     </div>

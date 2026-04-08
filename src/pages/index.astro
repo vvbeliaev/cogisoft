@@ -1,237 +1,193 @@
 ---
-import {
-  Rocket,
-  Handshake,
-  Cpu,
-  ArrowRight,
-  Code2,
-  Terminal,
-  Globe,
-  Shield,
-} from "@lucide/astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import AvatarVB from "$assets/images/bw-2.jpeg";
 
 import Root from "$layouts/Root.astro";
 import Portfolio from "$components/Portfolio.astro";
-import AboutUs from "$components/AboutUs.astro";
-import CodeWindow from "$components/CodeWindow.astro";
+import SectionLabel from "$components/SectionLabel.astro";
+import Kbd from "$components/Kbd.astro";
+import HeroShader from "$components/HeroShader.svelte";
+
+const competencies = [
+  {
+    icon: "ph:globe-duotone",
+    title: "Web Applications",
+    body: "Complex, responsive web apps built for scale and performance.",
+  },
+  {
+    icon: "ph:terminal-window-duotone",
+    title: "Backend Systems",
+    body: "Robust Go & Node.js architectures designed for high throughput.",
+  },
+  {
+    icon: "ph:file-code-duotone",
+    title: "System Integration",
+    body: "Unifying diverse systems into one cohesive, valuable product.",
+  },
+  {
+    icon: "ph:brain-duotone",
+    title: "AI & ML",
+    body: "Integration of LLMs and self-hosted models for intelligent apps.",
+  },
+];
 ---
 
 <Root path="/" title="Cogito Software | No Useless Software">
-  <main class="relative min-h-screen flex flex-col overflow-hidden">
-    <!-- Hero Section -->
-    <section
-      class="relative z-10 pt-32 pb-12 lg:pt-48 lg:pb-24 overflow-hidden"
-    >
-      <div
-        class="absolute inset-0 bg-linear-to-b from-primary/5 via-transparent to-transparent -z-10"
-      >
-      </div>
+  <main class="relative min-h-screen flex flex-col">
+    <!-- ═══════════════════════════════════════════════════════════════
+         HERO — Parchment editorial × code-window device
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="relative pt-32 lg:pt-44 pb-16 lg:pb-28">
       <div class="container mx-auto px-6">
-        <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-          <!-- Left Content -->
-          <div class="lg:w-3/5 text-left relative z-10 animate-in">
-            <h1
-              class="text-6xl sm:text-8xl lg:text-[8rem] font-bold mb-8 leading-[0.85] tracking-tighter"
-            >
-              We build <br />
-              <span class="text-primary uppercase">useful apps.</span>
+        <div
+          class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center"
+        >
+          <div class="lg:col-span-7 relative animate-in">
+            <SectionLabel index="00" text="thinking" accent />
+
+            <h1 class="mt-6 mb-8">
+              I build <br />
+              <span class="text-primary">useful software.</span>
             </h1>
 
-            <p
-              class="text-lg md:text-2xl text-base-content/70 mb-12 max-w-2xl leading-tight font-light"
-            >
-              We combine architectural purity with full code ownership to
-              guarantee your technical freedom.
+            <p class="body-editorial max-w-xl mb-10">
+              I combine architectural purity with full code ownership to
+              guarantee your technical freedom. No lock-in, no vague
+              deliverables — just a working system you own.
             </p>
 
             <div class="flex flex-wrap gap-4 items-center">
               <a
-                href="https://cal.com/cogisoft/30min"
+                href="https://cal.com/vvbeliaev/30min"
                 target="_blank"
-                class="btn btn-primary btn-lg px-10 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 rounded-none text-lg"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 h-12 px-8 text-[15px] font-medium bg-primary text-primary-foreground transition-opacity hover:opacity-90"
               >
                 Book a Call
+                <Icon name="ph:arrow-right" class="w-4 h-4 ml-1" />
               </a>
               <a
                 href="/contact"
-                class="btn btn-ghost btn-lg px-10 border border-base-content/10 hover:bg-base-content/5 rounded-none text-lg"
+                class="inline-flex items-center justify-center gap-2 h-12 px-8 text-[15px] font-medium text-foreground transition-colors hover:bg-muted"
               >
-                Contact Us
+                Contact
               </a>
+              <span
+                class="hidden sm:inline-flex items-center gap-2 label-mono ml-2"
+              >
+                or press
+                <Kbd label="⌘" />
+                <Kbd label="K" />
+              </span>
             </div>
           </div>
 
-          <!-- Right Visual -->
-          <div class="lg:w-3/5 w-full relative">
-            <div class="relative transform lg:scale-110 lg:translate-x-12">
-              <CodeWindow />
-            </div>
-
-            <!-- Decorative elements behind code block -->
-            <div
-              class="absolute -top-20 -right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse -z-10"
-            >
-            </div>
-            <div
-              class="absolute -bottom-20 -left-20 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-pulse -z-10"
-              style="animation-delay: 1s;"
-            >
+          <div class="lg:col-span-5 animate-in" style="animation-delay: 120ms;">
+            <div class="surface-lift overflow-hidden relative" style="aspect-ratio: 4/5;">
+              <!-- WebGL reveal shader: BW → oil-painting on mouse -->
+              <HeroShader
+                imageSrc={AvatarVB.src}
+                class="absolute inset-0 w-full h-full"
+                client:only="svelte"
+              />
+              <!-- Cursor hint label -->
+              <div
+                class="pointer-events-none absolute bottom-4 right-4 label-mono text-[11px] opacity-40 select-none"
+                style="mix-blend-mode: difference; color: white;"
+              >
+                move cursor
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- About Us Section -->
-    <AboutUs />
-
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-10 md:py-20 relative">
+    <!-- ═══════════════════════════════════════════════════════════════
+         PORTFOLIO
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="portfolio" class="py-16 md:py-24">
       <div class="container mx-auto px-6">
         <Portfolio />
       </div>
     </section>
 
-    <!-- Competencies Section -->
-    <section id="competencies" class="py-10 md:py-20 relative">
+    <!-- ═══════════════════════════════════════════════════════════════
+         COMPETENCIES
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="competencies" class="py-16 md:py-24">
       <div class="container mx-auto px-6">
-        <div class="mb-12">
-          <h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-            Core Competencies
-          </h2>
-          <div class="h-1 w-20 bg-primary rounded-full"></div>
+        <div class="mb-16 max-w-2xl">
+          <SectionLabel index="02" text="building" />
+          <h2 class="mt-6">Core competencies</h2>
+          <p class="body-editorial mt-6">
+            Four disciplines I ship end-to-end so you don't have to stitch
+            together half a dozen vendors.
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Web Apps -->
-          <div
-            class="group card-riveted p-8 bg-base-200/25 hover:bg-base-200/40 hover:border-primary/20 transition-colors duration-200"
-          >
-            <span class="rivet-accent top-3 left-3"></span>
-            <span class="rivet-accent top-3 right-3"></span>
-            <span class="rivet-accent bottom-3 left-3"></span>
-            <span class="rivet-accent bottom-3 right-3"></span>
-            <div
-              class="w-12 h-12 rounded-none bg-base-100/40 border-2 border-base-content/10 flex items-center justify-center text-primary mb-6 group-hover:border-primary/30 transition-colors"
-            >
-              <Globe class="w-6 h-6" />
-            </div>
-            <h3 class="text-xl font-bold mb-3">Web Applications</h3>
-            <p class="text-base-content/60 leading-relaxed text-sm">
-              Complex, responsive web apps built for scale and performance.
-            </p>
-          </div>
-
-          <!-- Backend -->
-          <div
-            class="group card-riveted p-8 bg-base-200/25 hover:bg-base-200/40 hover:border-secondary/20 transition-colors duration-200"
-          >
-            <span class="rivet-accent top-3 left-3"></span>
-            <span class="rivet-accent top-3 right-3"></span>
-            <span class="rivet-accent bottom-3 left-3"></span>
-            <span class="rivet-accent bottom-3 right-3"></span>
-            <div
-              class="w-12 h-12 rounded-none bg-base-100/40 border-2 border-base-content/10 flex items-center justify-center text-secondary mb-6 group-hover:border-secondary/30 transition-colors"
-            >
-              <Terminal class="w-6 h-6" />
-            </div>
-            <h3 class="text-xl font-bold mb-3">Backend Systems</h3>
-            <p class="text-base-content/60 leading-relaxed text-sm">
-              Robust Node.js & Python architectures designed for high
-              throughput.
-            </p>
-          </div>
-
-          <!-- Integration -->
-          <div
-            class="group card-riveted p-8 bg-base-200/25 hover:bg-base-200/40 hover:border-accent/20 transition-colors duration-200"
-          >
-            <span class="rivet-accent top-3 left-3"></span>
-            <span class="rivet-accent top-3 right-3"></span>
-            <span class="rivet-accent bottom-3 left-3"></span>
-            <span class="rivet-accent bottom-3 right-3"></span>
-            <div
-              class="w-12 h-12 rounded-none bg-base-100/40 border-2 border-base-content/10 flex items-center justify-center text-accent mb-6 group-hover:border-accent/30 transition-colors"
-            >
-              <Code2 class="w-6 h-6" />
-            </div>
-            <h3 class="text-xl font-bold mb-3">System Integration</h3>
-            <p class="text-base-content/60 leading-relaxed text-sm">
-              Unifying diverse systems into one cohesive, valuable product.
-            </p>
-          </div>
-
-          <!-- AI & ML -->
-          <div
-            class="group card-riveted p-8 bg-base-200/25 hover:bg-base-200/40 hover:border-info/20 transition-colors duration-200"
-          >
-            <span class="rivet-accent top-3 left-3"></span>
-            <span class="rivet-accent top-3 right-3"></span>
-            <span class="rivet-accent bottom-3 left-3"></span>
-            <span class="rivet-accent bottom-3 right-3"></span>
-            <div
-              class="w-12 h-12 rounded-none bg-base-100/40 border-2 border-base-content/10 flex items-center justify-center text-info mb-6 group-hover:border-info/30 transition-colors"
-            >
-              <Cpu class="w-6 h-6" />
-            </div>
-            <h3 class="text-xl font-bold mb-3">AI & ML</h3>
-            <p class="text-base-content/60 leading-relaxed text-sm">
-              Integration of LLMs and self-hosted models for intelligent apps.
-            </p>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {
+            competencies.map((item) => (
+              <div class="surface-lift p-8 transition-opacity hover:opacity-80">
+                <div class="text-primary mb-6">
+                  <Icon name={item.icon} class="w-8 h-8" />
+                </div>
+                <h3 class="mb-3">{item.title}</h3>
+                <p class="text-[15px] text-foreground/60 leading-relaxed">
+                  {item.body}
+                </p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
 
-    <!-- Offerings Section -->
-    <section id="offerings" class="py-10 md:py-20 relative z-10">
+    <!-- ═══════════════════════════════════════════════════════════════
+         OFFERING — Custom Solution
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="offerings" class="py-16 md:py-24">
       <div class="container mx-auto px-6">
-        <div class="mb-12">
-          <h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-            Our Primary Offering
-          </h2>
-          <div class="h-1 w-20 bg-primary rounded-full"></div>
+        <div class="mb-16 max-w-2xl">
+          <SectionLabel index="03" text="offering" />
+          <h2 class="mt-6">My primary offering</h2>
         </div>
 
-        <div class="max-w-4xl mx-auto">
-          <!-- Custom Solution (Rebranded MVP) -->
+        <div class="max-w-5xl">
           <a
             href="/custom-solution"
-            class="group relative overflow-hidden card-terminal bg-base-100/40 hover:border-primary/30 transition-colors duration-200 p-8 md:p-12 block"
+            class="group block surface-lift p-10 md:p-14 transition-opacity hover:opacity-90"
           >
-            <span class="rivet-accent top-3 left-3"></span>
-            <span class="rivet-accent top-3 right-3"></span>
-            <span class="rivet-accent bottom-3 left-3"></span>
-            <span class="rivet-accent bottom-3 right-3"></span>
-            <div
-              class="absolute top-0 right-0 w-64 h-64 bg-primary/5 -mr-16 -mt-16 transition-all group-hover:bg-primary/10 rounded-full"
-            >
-            </div>
-            <div
-              class="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start"
-            >
+            <div class="flex flex-col md:flex-row gap-10 items-start">
               <div
-                class="inline-flex p-6 rounded-none bg-base-100/40 border-2 border-base-content/10 text-primary"
+                class="inline-flex p-5 text-primary surface-lift shrink-0"
+                style="border-radius: 0;"
               >
-                <Rocket class="w-12 h-12" />
+                <Icon name="ph:rocket-launch-duotone" class="w-10 h-10" />
               </div>
-              <div class="flex-1 text-center md:text-left">
-                <h3 class="text-3xl md:text-4xl font-bold mb-4">
+              <div class="flex-1">
+                <h3
+                  class="text-3xl md:text-4xl mb-4"
+                  style="font-family: var(--font-display); font-weight: 500; letter-spacing: var(--tracking-section);"
+                >
                   Custom Solution
                 </h3>
-                <div class="text-xl font-medium text-primary mb-6">
+                <p class="text-lg text-primary mb-6">
                   Deployment-ready prototype in 7 days.
-                </div>
-                <p class="text-lg text-base-content/60 mb-8 max-w-2xl">
-                  We specialize in rapid high-quality builds. Get a
+                </p>
+                <p class="body-editorial mb-8 max-w-2xl">
+                  I specialize in rapid, high-quality builds. You get a
                   production-grade foundation with full code ownership and no
-                  vendor lock-in. Perfect for validating new product concepts or
-                  scaling existing ones.
+                  vendor lock-in — perfect for validating new product concepts
+                  or scaling existing ones.
                 </p>
                 <span
-                  class="text-lg font-bold text-primary flex items-center justify-center md:justify-start gap-2 group-hover:gap-4 transition-all"
+                  class="inline-flex items-center gap-2 text-[14px] font-semibold text-primary group-hover:gap-3 transition-all"
                 >
-                  Explore Solution <ArrowRight class="w-6 h-6" />
+                  Explore solution
+                  <Icon name="ph:arrow-right" class="w-4 h-4 ml-1" />
                 </span>
               </div>
             </div>

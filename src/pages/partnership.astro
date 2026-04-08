@@ -1,80 +1,71 @@
 ---
 import Root from "$layouts/Root.astro";
+import SectionLabel from "$components/SectionLabel.astro";
+import { Icon } from "astro-icon/components";
+
+const reasons = [
+  {
+    title: "Speed",
+    body: "I deliver prototypes in days, not months.",
+  },
+  {
+    title: "Quality",
+    body: "Modern stack (Astro, Svelte, Go/Node). No legacy code.",
+  },
+  {
+    title: "Reliability",
+    body: "I handle the tech, you handle the client relationship.",
+  },
+];
 ---
 
 <Root path="/partnership" title="Partnership | Cogito Software">
   <main class="relative min-h-screen flex flex-col">
-    <section
-      class="grow flex items-center justify-center relative overflow-hidden py-8 md:py-16"
-    >
-      <div class="container mx-auto px-4 z-10 relative">
+    <section class="grow flex items-center justify-center py-20 md:py-28">
+      <div class="container mx-auto px-6 relative">
         <div class="max-w-4xl mx-auto text-center">
-          <div
-            class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 border-2 border-base-content/10 bg-base-200/40 text-xs uppercase tracking-widest font-mono text-secondary"
-          >
-            <span class="led-indicator text-success"></span>
-            Partnership channel
+          <div class="inline-block mb-6">
+            <SectionLabel text="partnership channel" accent />
           </div>
 
-          <h1
-            class="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight"
-          >
-            We Build. <br />
-            <span
-              class="text-transparent bg-clip-text bg-linear-to-r from-secondary to-primary"
-              >You Sell.</span
-            >
+          <h1 class="mb-8">
+            I build. <br />
+            <span class="text-primary">You sell.</span>
           </h1>
 
-          <p
-            class="text-xl md:text-2xl text-base-content/70 mb-12 max-w-2xl mx-auto font-light"
-          >
-            Lightning fast iterations. Reliable delivery. Partner with us to
+          <p class="body-editorial mb-16 max-w-2xl mx-auto">
+            Lightning-fast iterations. Reliable delivery. Partner with me to
             offer premium software development to your clients without the
             overhead.
           </p>
 
-          <div class="card-riveted max-w-2xl mx-auto p-8 text-left mb-12">
-            <span class="rivet-accent top-3 left-3"></span>
-            <span class="rivet-accent top-3 right-3"></span>
-            <span class="rivet-accent bottom-3 left-3"></span>
-            <span class="rivet-accent bottom-3 right-3"></span>
-            <h3 class="text-2xl font-bold mb-4">Why Partner with Cogisoft?</h3>
-            <ul class="space-y-4">
-              <li class="flex items-start gap-3">
-                <div class="mt-1 shrink-0">
-                  <span class="led-indicator text-success"></span>
-                </div>
-                <span
-                  ><strong>Speed:</strong> We deliver prototypes in days, not months.</span
-                >
-              </li>
-              <li class="flex items-start gap-3">
-                <div class="mt-1 shrink-0">
-                  <span class="led-indicator text-success"></span>
-                </div>
-                <span
-                  ><strong>Quality:</strong> Modern stack (Astro, Svelte, Node/Python).
-                  No legacy code.</span
-                >
-              </li>
-              <li class="flex items-start gap-3">
-                <div class="mt-1 shrink-0">
-                  <span class="led-indicator text-success"></span>
-                </div>
-                <span
-                  ><strong>Reliability:</strong> We handle the tech, you handle the
-                  client relationship.</span
-                >
-              </li>
+          <div class="surface-lift max-w-2xl mx-auto p-10 text-left mb-12">
+            <h3 class="mb-8">Why partner with Cogisoft?</h3>
+            <ul class="space-y-6">
+              {
+                reasons.map((reason) => (
+                  <li class="flex items-start gap-4">
+                    <Icon name="ph:check-bold" class="w-4 h-4 mt-1.5 text-primary shrink-0" />
+                    <div>
+                      <div class="font-semibold text-[15px] mb-1">
+                        {reason.title}
+                      </div>
+                      <p class="text-[15px] text-foreground/60 leading-relaxed">
+                        {reason.body}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              }
             </ul>
           </div>
 
           <a
             href="/contact"
-            class="btn btn-secondary btn-lg text-lg px-8 shadow-lg shadow-secondary/30 hover:shadow-secondary/50 transition-all"
+            class="inline-flex items-center justify-center gap-2 h-12 px-10 text-[15px] font-medium bg-primary text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Become a Partner
+            Become a partner
+            <Icon name="ph:arrow-right" class="w-4 h-4 ml-1" />
           </a>
         </div>
       </div>

@@ -4,13 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - PUBLIC_PB_URL=${PUBLIC_PB_URL:-https://cogisoft.dev}
       - PUBLIC_POSTHOG_URL=${PUBLIC_POSTHOG_URL:-https://eu.i.posthog.com}
       - PUBLIC_POSTHOG_TOKEN=${PUBLIC_POSTHOG_TOKEN:-phc_KBLc1ExggN021vOnZvXf5Ech2Bauk1jwZrrdJuBKUOU}
-
-      - PB_EMAIL=${PB_EMAIL:-cogitoteamdev@gmail.com}
-      - PB_PASSWORD=${PB_PASSWORD}
-      # - STRIPE_API_KEY=${STRIPE_API_KEY}
-      # - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - SQLITE_DB_PATH=/data/cogisoft.db
+      - TG_CHAT_ID=${TG_CHAT_ID}
+      - TG_BOT_TOKEN=${TG_BOT_TOKEN}
     volumes:
-      - ./pb/pb_data:/app/pb_data
+      - ./data:/data

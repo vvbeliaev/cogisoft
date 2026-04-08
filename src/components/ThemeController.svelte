@@ -7,69 +7,59 @@
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Sun, Moon } from "lucide-svelte";
+  import Sun from "~icons/ph/sun-duotone";
+  import Moon from "~icons/ph/moon-duotone";
 
-  const { expanded = false, navStyle = false } = $props();
+  interface Props {
+    expanded?: boolean;
+  }
+
+  const { expanded = false }: Props = $props();
 
   const themeLabel = $derived(selectedDark ? "Dark mode" : "Light mode");
 
   onMount(() => {
     const theme = localStorage.getItem("theme");
-    theme === DARK_THEME ? (selectedDark = true) : (selectedDark = false);
+    selectedDark = theme === DARK_THEME;
   });
 
   $effect(() => {
-    let newTheme = LIGHT_THEME;
-    if (selectedDark) newTheme = DARK_THEME;
-
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
+    const nextTheme = selectedDark ? DARK_THEME : LIGHT_THEME;
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("theme", nextTheme);
   });
+
+  function toggle() {
+    selectedDark = !selectedDark;
+  }
 </script>
 
 {#if expanded}
-  <label
-    class={[
-      "flex w-full cursor-pointer items-center transition-all",
-      navStyle
-        ? "btn btn-circle justify-start gap-2 rounded-full px-4 btn-ghost"
-        : "gap-3 rounded-lg border border-base-300 px-2 py-1 transition-colors hover:bg-base-300",
-    ]}
+  <button
+    type="button"
+    onclick={toggle}
+    class="flex w-full items-center gap-3 rounded-none px-3 py-2 text-sm text-foreground transition-colors hover:bg-muted"
+    aria-label={themeLabel}
   >
-    <input
-      bind:checked={selectedDark}
-      type="checkbox"
-      class="theme-controller hidden"
-      value={selectedDark ? DARK_THEME : LIGHT_THEME}
-    />
-
     {#if selectedDark}
-      <Moon
-        class={navStyle ? "swap-on block size-6 shrink-0" : "swap-on size-7"}
-      />
+      <Moon class="size-4 shrink-0" />
     {:else}
-      <Sun
-        class={navStyle ? "swap-off block size-6 shrink-0" : "swap-off size-7"}
-      />
+      <Sun class="size-4 shrink-0" />
     {/if}
-
-    <span
-      class={[
-        "font-medium text-nowrap",
-        navStyle ? "" : "text-sm text-base-content",
-      ]}>{themeLabel}</span
-    >
-  </label>
+    <span>{themeLabel}</span>
+  </button>
 {:else}
-  <label class="swap swap-rotate cursor-pointer">
-    <input
-      bind:checked={selectedDark}
-      type="checkbox"
-      class="theme-controller hidden"
-      value={selectedDark ? DARK_THEME : LIGHT_THEME}
-    />
-
-    <Sun class="swap-off size-9" />
-    <Moon class="swap-on size-9" />
-  </label>
+  <button
+    type="button"
+    onclick={toggle}
+    class="inline-flex size-9 items-center justify-center rounded-none text-foreground transition-colors hover:bg-muted"
+    aria-label={themeLabel}
+    title={themeLabel}
+  >
+    {#if selectedDark}
+      <Moon class="size-5" />
+    {:else}
+      <Sun class="size-5" />
+    {/if}
+  </button>
 {/if}

@@ -1,46 +1,62 @@
 [
   {
+    "slug": "spacenplace",
+    "priority": 0,
+    "featured": true,
+    "deprecated": false,
+    "title": "SpaceNPlace",
+    "description": "AI-powered real estate intelligence platform. Semantic property search and personalized scoring across 45+ cities — matches properties to your lifestyle, not just your checklist.",
+    "tags": ["AI", "Real Estate", "Scoring", "SvelteKit", "LLM"],
+    "link": "https://spacenplace.ai",
+    "image": "../assets/labs/snp.png",
+    "color": "from-orange-400 to-rose-400"
+  },
+  {
     "slug": "quizbee",
     "priority": 1,
     "featured": true,
+    "deprecated": true,
     "title": "Quizbee",
     "description": "Educational platform for interactive quizzes and learning paths.",
     "tags": ["Education", "LMS", "Svelte"],
     "link": "https://quizbee.academy",
-    "image": "../assets/quizbee.png",
+    "image": "../assets/labs/quizbee.png",
     "color": "from-blue-500 to-cyan-400"
   },
   {
     "slug": "univerlink",
     "featured": false,
+    "deprecated": true,
     "title": "Univerlink",
     "priority": 3,
     "description": "University portal for students mentorship and networking.",
     "tags": ["Community", "Mentorship", "Astro"],
     "link": "https://univerlink.cogisoft.dev",
-    "image": "../assets/univerlink.png",
+    "image": "../assets/labs/univerlink.png",
     "color": "from-blue-500 to-cyan-400"
   },
   {
     "slug": "youstory",
     "priority": 2,
     "featured": false,
+    "deprecated": true,
     "title": "YouStory",
     "description": "LLM-based Roleplay Stories Generator",
     "tags": ["AI", "LLM", "SvelteKit"],
     "link": "https://ys.cogitosoftware.nl",
-    "image": "../assets/youstory.png",
+    "image": "../assets/labs/youstory.png",
     "color": "from-fuchsia-500 to-pink-400"
   },
   {
     "slug": "hackseeker",
     "featured": false,
+    "deprecated": true,
     "title": "HackSeeker",
     "priority": 2,
     "description": "AI-powered platform for finding and validating product ideas.",
     "tags": ["AI", "SaaS", "Validation"],
     "link": "https://hackseeker.com",
-    "image": "../assets/hackseeker.png",
+    "image": "../assets/labs/hackseeker.png",
     "color": "from-red-500 to-orange-400"
   }
 ]

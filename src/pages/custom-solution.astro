@@ -2,84 +2,72 @@
 import Root from "$layouts/Root.astro";
 import Hero from "$components/Hero.astro";
 import TechStack from "$components/TechStack.astro";
-import Portfolio from "$components/Portfolio.astro";
 import Offer from "$components/Offer.astro";
-import { Cpu, Network, Layers, ArrowRight } from "@lucide/astro";
+import SectionLabel from "$components/SectionLabel.astro";
+import { Icon } from "astro-icon/components";
+
+const beyondItems = [
+  {
+    icon: "ph:graph-duotone",
+    title: "Complex integrations",
+    body: "I handle deep architectural integrations with legacy systems, third-party APIs, and hardware interfaces. No system is too isolated to connect.",
+  },
+  {
+    icon: "ph:stack-duotone",
+    title: "Enterprise scaling",
+    body: "Ready for the long haul. I support multi-year projects, infrastructure migrations, and building out complete engineering foundations for your product.",
+  },
+];
 ---
 
 <Root path="/custom-solution" title="Custom Solution | Cogito Software">
-  <main class="relative min-h-screen bg-base-100 overflow-x-hidden">
+  <main class="relative min-h-screen">
     <Hero />
     <TechStack />
-    <!-- <Portfolio /> -->
     <Offer />
 
-    <!-- New Section: Beyond the MVP / Custom Solutions -->
-    <section class="py-20 bg-base-200/50 relative overflow-hidden">
+    <!-- Beyond the MVP -->
+    <section class="py-16 md:py-24">
       <div class="container mx-auto px-6">
         <div class="max-w-4xl mx-auto">
-          <div class="mb-12 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-              Beyond the MVP
-            </h2>
-            <p class="text-xl text-base-content/70 font-light">
-              While our 7-day sprint is the perfect start, we are fully equipped
-              for long-term engineering challenges.
+          <div class="mb-16 text-center">
+            <SectionLabel text="beyond mvp" />
+            <h2 class="mt-6 mb-6">Beyond the MVP.</h2>
+            <p class="body-editorial max-w-2xl mx-auto">
+              While the 7-day sprint is the perfect start, I am fully
+              equipped for long-term engineering challenges.
             </p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="card-riveted p-8 bg-base-100/40 border-primary/10">
-              <span class="rivet-accent top-3 left-3"></span>
-              <span class="rivet-accent top-3 right-3"></span>
-              <span class="rivet-accent bottom-3 left-3"></span>
-              <span class="rivet-accent bottom-3 right-3"></span>
-              <div
-                class="w-12 h-12 bg-primary/10 flex items-center justify-center text-primary mb-6"
-              >
-                <Network class="w-6 h-6" />
-              </div>
-              <h3 class="text-xl font-bold mb-4">Complex Integrations</h3>
-              <p class="text-base-content/60 text-sm leading-relaxed">
-                We handle deep architectural integrations with legacy systems,
-                third-party APIs, and hardware interfaces. No system is too
-                isolated for us to connect.
-              </p>
-            </div>
-
-            <div class="card-riveted p-8 bg-base-100/40 border-primary/10">
-              <span class="rivet-accent top-3 left-3"></span>
-              <span class="rivet-accent top-3 right-3"></span>
-              <span class="rivet-accent bottom-3 left-3"></span>
-              <span class="rivet-accent bottom-3 right-3"></span>
-              <div
-                class="w-12 h-12 bg-primary/10 flex items-center justify-center text-primary mb-6"
-              >
-                <Layers class="w-6 h-6" />
-              </div>
-              <h3 class="text-xl font-bold mb-4">Enterprise Scaling</h3>
-              <p class="text-base-content/60 text-sm leading-relaxed">
-                Ready for the long haul. We support multi-year projects,
-                infrastructure migrations, and building out complete engineering
-                departments for your product.
-              </p>
-            </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {
+              beyondItems.map((item) => (
+                <div class="surface-lift p-10">
+                  <div class="text-primary mb-6">
+                    <Icon name={item.icon} class="w-8 h-8" />
+                  </div>
+                  <h3 class="mb-4">{item.title}</h3>
+                  <p class="text-[15px] text-foreground/60 leading-relaxed">
+                    {item.body}
+                  </p>
+                </div>
+              ))
+            }
           </div>
 
-          <div
-            class="mt-16 p-8 border-2 border-dashed border-primary/20 bg-primary/5 text-center"
-          >
-            <h3 class="text-2xl font-bold mb-4">
-              Have a non-standard request?
-            </h3>
-            <p class="text-base-content/70 mb-8 max-w-2xl mx-auto">
-              We are ready to discuss and consider absolutely any integrations,
-              long-term partnerships, or unique technical constraints. Our
-              engineering expertise knows no bounds.
+          <div class="mt-12 p-10 surface-lift text-center">
+            <h3 class="mb-4">Have a non-standard request?</h3>
+            <p class="body-editorial max-w-2xl mx-auto mb-8">
+              I'm ready to discuss absolutely any integrations, long-term
+              partnerships, or unique technical constraints. My engineering
+              expertise knows no bounds.
             </p>
-            <a href="/contact" class="btn btn-primary btn-lg px-10">
-              Discuss Custom Project
-              <ArrowRight class="w-5 h-5 ml-2" />
+            <a
+              href="/contact"
+              class="inline-flex items-center justify-center gap-2 h-12 px-10 text-[15px] font-medium bg-primary text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Discuss custom project
+              <Icon name="ph:arrow-right" class="w-4 h-4 ml-1" />
             </a>
           </div>
         </div>

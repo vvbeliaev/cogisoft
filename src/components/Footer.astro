@@ -2,48 +2,45 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="mt-24 border-t border-base-content/10">
-  <div class="container mx-auto px-4 py-12">
-    <div class="panel-industrial card-riveted">
-      <span class="rivet-accent top-3 left-3"></span>
-      <span class="rivet-accent top-3 right-3"></span>
-      <span class="rivet-accent bottom-3 left-3"></span>
-      <span class="rivet-accent bottom-3 right-3"></span>
-
-      <div
-        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8"
-      >
-        <div>
-          <a href="/" class="text-display text-base-content">Cogito Software</a>
-          <p class="text-sm text-base-content/60 mt-2 max-w-md">
-            We don't build useless software: local-first systems, repairable
-            workflows, modular architecture.
-          </p>
-        </div>
-
-        <div
-          class="flex flex-wrap gap-x-6 gap-y-3 text-xs uppercase tracking-widest"
+<footer class="mt-24">
+  <div class="container mx-auto px-6 py-16">
+    <div
+      class="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 pt-12"
+      style="box-shadow: rgba(20, 20, 19, 0.08) 0 1px 0 0 inset;"
+    >
+      <div class="max-w-md">
+        <a
+          href="/"
+          class="text-2xl"
+          style="font-family: var(--font-display); font-weight: 500;"
+          >Cogito Software</a
         >
-          <a
-            href="/privacy-policy"
-            class="text-base-content/60 hover:text-primary transition-colors"
-            >Privacy Policy</a
-          >
-          <a
-            href="/terms-and-conditions"
-            class="text-base-content/60 hover:text-primary transition-colors"
-            >Terms of Service</a
-          >
-          <a
-            href="/contact"
-            class="text-base-content/60 hover:text-primary transition-colors"
-            >Contact</a
-          >
-        </div>
+        <p class="body-editorial mt-3">
+          I don't build useless software. Local-first systems, repairable
+          workflows, modular architecture.
+        </p>
+      </div>
 
-        <div class="text-xs text-base-content/40 font-mono text-display">
-          © {currentYear} Cogito Software. All systems nominal.
-        </div>
+      <nav class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <a
+          href="/privacy-policy"
+          class="text-foreground/60 hover:text-foreground transition-colors"
+          >Privacy</a
+        >
+        <a
+          href="/terms-and-conditions"
+          class="text-foreground/60 hover:text-foreground transition-colors"
+          >Terms</a
+        >
+        <a
+          href="/contact"
+          class="text-foreground/60 hover:text-foreground transition-colors"
+          >Contact</a
+        >
+      </nav>
+
+      <div class="label-mono">
+        © {currentYear} / all systems nominal
       </div>
     </div>
   </div>

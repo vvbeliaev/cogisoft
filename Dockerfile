@@ -1,44 +1,44 @@
-# Build stage for Astro
-FROM node:24-alpine AS astro-builder
+# syntax=docker/dockerfile:1.6
+
+# ---- Build stage ----
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+# Native build deps for better-sqlite3 (only used in this stage)
+RUN apk add --no-cache python3 make g++ \
+    && corepack enable \
+    && corepack prepare pnpm@latest --activate
 
 COPY package.json pnpm-lock.yaml ./
-COPY astro.config.mjs svelte.config.js tsconfig.json ./
+RUN pnpm install --frozen-lockfile
 
+COPY astro.config.mjs svelte.config.js tsconfig.json ./
 COPY src ./src
 COPY public ./public
 
-RUN pnpm install --frozen-lockfile
 RUN pnpm build
 
-# Build stage for Go
-FROM golang:1.25-alpine AS go-builder
+# Drop dev dependencies for the runtime image
+RUN pnpm prune --prod
+
+# ---- Runtime stage ----
+FROM node:24-alpine AS runtime
 
 WORKDIR /app
 
-COPY pb/go.mod pb/go.sum ./
-RUN go mod download
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=4321 \
+    SQLITE_DB_PATH=/data/cogisoft.db
 
-COPY pb/ ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./package.json
 
-COPY --from=astro-builder /app/dist ./pb_public
+RUN mkdir -p /data
+VOLUME ["/data"]
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+EXPOSE 4321
 
-# Final stage
-FROM alpine:latest
-
-RUN apk --no-cache add ca-certificates
-
-WORKDIR /app
-
-COPY --from=go-builder /app/main .
-COPY --from=go-builder /app/pb_public ./pb_public
-COPY --from=go-builder /app/migrations ./migrations
-
-EXPOSE 8090
-
-CMD ["./main", "serve", "--http=0.0.0.0:8090"]
+CMD ["node", "./dist/server/entry.mjs"]

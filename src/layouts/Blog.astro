@@ -1,15 +1,16 @@
 ---
-import { Twitter, Github } from "@lucide/astro";
+import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import type { MarkdownHeading } from "astro";
 
 import "$styles/global.css";
-import Header from "$components/Header.astro";
+import Header from "$components/Header.svelte";
 import Footer from "$components/Footer.astro";
 import Background from "$components/Background.astro";
 import Posthog from "$components/Posthog.astro";
 import MetaPixelCode from "$components/MetaPixelCode.astro";
 import WaitlistForm from "$components/WaitlistForm.svelte";
+import CommandPalette from "$components/CommandPalette.svelte";
 
 interface Props {
   title: string;
@@ -114,10 +115,11 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
     </script>
   </head>
   <body
-    class="bg-base-100 text-base-content antialiased selection:bg-primary/20 selection:text-primary min-h-screen"
+    class="bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary min-h-screen"
   >
     <Background />
-    <Header path="/blog" />
+    <Header path="/blog" client:only="svelte" />
+    <CommandPalette client:only="svelte" />
 
     <main class="w-full">
       <header class="container mx-auto px-6 pt-24 pb-16 text-center max-w-4xl">
@@ -140,7 +142,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
         {
           image && (
             <div class="w-full max-w-6xl mx-auto mb-12 px-0 md:px-4">
-              <div class="overflow-hidden rounded-2xl md:rounded-4xl bg-base-200 shadow-2xl">
+              <div class="overflow-hidden rounded-2xl md:rounded-4xl bg-card shadow-2xl">
                 <Image
                   src={image}
                   alt={title}
@@ -182,14 +184,14 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
             </div>
 
             <footer
-              class="mt-32 pt-16 border-t border-base-content/10 flex flex-col gap-12"
+              class="mt-32 pt-16 border-t border-foreground/10 flex flex-col gap-12"
             >
               <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {
                   prevPost && (
                     <a
                       href={`/blog/${prevPost.id}`}
-                      class="group flex flex-col gap-4 p-6 bg-base-200/30 rounded-2xl border border-base-content/5 hover:bg-base-200/50 transition-all"
+                      class="group flex flex-col gap-4 p-6 bg-card/30 rounded-2xl border border-foreground/5 hover:bg-card/50 transition-all"
                     >
                       <span class="text-[10px] uppercase tracking-[0.2em] font-black opacity-30 group-hover:opacity-100 transition-opacity">
                         Previous Post
@@ -204,7 +206,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
                   nextPost && (
                     <a
                       href={`/blog/${nextPost.id}`}
-                      class="group flex flex-col gap-4 p-6 bg-base-200/30 rounded-2xl border border-base-content/5 hover:bg-base-200/50 transition-all text-right"
+                      class="group flex flex-col gap-4 p-6 bg-card/30 rounded-2xl border border-foreground/5 hover:bg-card/50 transition-all text-right"
                     >
                       <span class="text-[10px] uppercase tracking-[0.2em] font-black opacity-30 group-hover:opacity-100 transition-opacity">
                         Next Post
@@ -230,7 +232,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
           <aside class="sticky top-28 hidden lg:block space-y-5 self-start">
             {
               authors && (
-                <div class="author-card p-5 bg-base-200/30 rounded-2xl border border-base-content/5 transition-all hover:bg-base-200/50">
+                <div class="author-card p-5 bg-card/30 rounded-2xl border border-foreground/5 transition-all hover:bg-card/50">
                   <h2 class="text-[10px] uppercase tracking-[0.3em] font-black mb-4 opacity-30">
                     {authors.length > 1 ? "Authors" : "Author"}
                   </h2>
@@ -246,10 +248,10 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
                               height={80}
                               class="w-8 h-8 object-cover rounded-full grayscale group-hover/author:grayscale-0 transition-all duration-300"
                             />
-                            <div class="absolute inset-0 rounded-full border border-base-content/10 group-hover/author:border-primary/30 transition-colors" />
+                            <div class="absolute inset-0 rounded-full border border-foreground/10 group-hover/author:border-primary/30 transition-colors" />
                           </div>
                         ) : (
-                          <div class="w-8 h-8 rounded-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-base-content/5 text-primary font-bold shadow-inner text-[10px] uppercase">
+                          <div class="w-8 h-8 rounded-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-foreground/5 text-primary font-bold shadow-inner text-[10px] uppercase">
                             {author.charAt(0)}
                           </div>
                         )}
@@ -288,7 +290,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
             </nav>
 
             <div
-              class="newsletter-cta p-6 bg-base-200/50 rounded-2xl border border-base-content/5"
+              class="newsletter-cta p-6 bg-card/50 rounded-2xl border border-foreground/5"
             >
               <h2
                 class="text-[10px] uppercase tracking-[0.3em] font-black mb-4 opacity-30"
@@ -321,7 +323,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
                   href="https://twitter.com/cogisoft"
                   class="flex items-center gap-3 text-xs font-bold opacity-40 hover:opacity-100 transition-all hover:translate-x-1"
                 >
-                  <Twitter class="w-4 h-4" />
+                  <Icon name="ph:x-logo-fill" class="w-4 h-4" />
                   Twitter / X
                 </a>
                 <!-- <a
@@ -335,7 +337,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
                   href="https://github.com/CogitoSoftwareOrg"
                   class="flex items-center gap-3 text-xs font-bold opacity-40 hover:opacity-100 transition-all hover:translate-x-1"
                 >
-                  <Github class="w-4 h-4" />
+                  <Icon name="ph:github-logo-fill" class="w-4 h-4" />
                   GitHub
                 </a>
               </div>
@@ -343,7 +345,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
 
             <button
               onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-              class="flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] font-black opacity-30 hover:opacity-100 transition-all pt-8 border-t border-base-content/5 w-full text-left group"
+              class="flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] font-black opacity-30 hover:opacity-100 transition-all pt-8 border-t border-foreground/5 w-full text-left group"
             >
               <span class="group-hover:-translate-y-1 transition-transform"
                 >↑</span
@@ -367,27 +369,36 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
   .blog-content {
     font-size: 1.25rem;
     line-height: 1.6;
-    color: color-mix(in oklch, var(--color-base-content), transparent 10%);
+    color: color-mix(in oklch, var(--foreground), transparent 10%);
   }
 
-  /* Headlines refinement - Linear Style */
-  .blog-content h2,
-  .blog-content h3,
-  .blog-content h4 {
+  /* Headlines refinement — serif display (IBM × Anthropic) */
+  .blog-content h2 {
     font-family: var(--font-display);
-    text-transform: none !important;
-    letter-spacing: -0.04em !important;
-    font-weight: 700;
-    color: var(--color-base-content);
+    text-transform: none;
+    letter-spacing: var(--tracking-display);
+    font-weight: 500;
+    color: var(--foreground);
     margin-top: 4rem;
     margin-bottom: 1.5rem;
+    scroll-margin-top: 120px;
+  }
+  .blog-content h3,
+  .blog-content h4 {
+    font-family: var(--font-sans);
+    text-transform: none;
+    letter-spacing: var(--tracking-section);
+    font-weight: 600;
+    color: var(--foreground);
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
     scroll-margin-top: 120px;
   }
 
   .blog-content h2 {
     font-size: 2.5rem;
     border-bottom: 1px solid
-      color-mix(in oklch, var(--color-base-content), transparent 95%);
+      color-mix(in oklch, var(--foreground), transparent 95%);
     padding-bottom: 0.5rem;
   }
   .blog-content h3 {
@@ -410,7 +421,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
   }
 
   .blog-content pre::-webkit-scrollbar-thumb {
-    background: color-mix(in oklch, var(--color-base-content), transparent 80%);
+    background: color-mix(in oklch, var(--foreground), transparent 80%);
     border-radius: var(--radius-box);
   }
 
@@ -421,9 +432,9 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
     padding: 0.15em 0.4em;
     background: transparent;
     border: 1px solid
-      color-mix(in oklch, var(--color-base-content), transparent 80%);
+      color-mix(in oklch, var(--foreground), transparent 80%);
     border-radius: 0;
-    color: var(--color-base-content);
+    color: var(--foreground);
     font-weight: 400;
   }
 
@@ -431,7 +442,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
   .blog-content blockquote {
     margin: 4rem 0;
     padding: 0 0 0 2.5rem;
-    border-left: 2px solid var(--color-primary);
+    border-left: 2px solid var(--primary);
     border-right: none;
     border-top: none;
     border-bottom: none;
@@ -444,7 +455,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
   .blog-content blockquote p {
     font-size: 1.5rem;
     line-height: 1.5;
-    color: var(--color-base-content);
+    color: var(--foreground);
     opacity: 0.7;
     margin: 0;
   }
@@ -454,13 +465,13 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
     margin: 5rem 0;
     border: none;
     border-top: 1px solid
-      color-mix(in oklch, var(--color-base-content), transparent 90%);
+      color-mix(in oklch, var(--foreground), transparent 90%);
   }
 
   /* TOC Active/Hover */
   .toc-item a.active {
     opacity: 1;
-    color: var(--color-primary);
+    color: var(--primary);
     transform: translateX(4px);
   }
 
@@ -476,7 +487,7 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: color-mix(in oklch, var(--color-base-content), transparent 80%);
+    background: color-mix(in oklch, var(--foreground), transparent 80%);
   }
 
   /* Images inside content */
@@ -498,14 +509,14 @@ const tocHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
     text-align: left;
     padding: 1rem;
     border-bottom: 2px solid
-      color-mix(in oklch, var(--color-base-content), transparent 80%);
+      color-mix(in oklch, var(--foreground), transparent 80%);
     font-weight: 700;
   }
 
   .blog-content td {
     padding: 1rem;
     border-bottom: 1px solid
-      color-mix(in oklch, var(--color-base-content), transparent 93%);
+      color-mix(in oklch, var(--foreground), transparent 93%);
   }
 
   /* Prevent x-scroll on mobile for tables */

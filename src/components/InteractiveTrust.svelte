@@ -6,7 +6,7 @@
 </script>
 
 <div
-  class="my-12 p-8 rounded-3xl bg-base-200/50 border border-base-content/5 not-prose"
+  class="my-12 p-8 surface-lift not-prose"
 >
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-2">
@@ -33,14 +33,14 @@
             max="1"
             step="0.01"
             bind:value={transparency}
-            class="range range-primary range-xs"
+            class="w-full accent-primary"
           />
         </div>
 
         <div class="flex flex-col gap-3">
           <div class="flex justify-between text-sm">
             <span class="font-bold opacity-80">Competence</span>
-            <span class="text-secondary font-mono"
+            <span class="text-foreground/80 font-mono"
               >{Math.round(competence * 100)}%</span
             >
           </div>
@@ -50,18 +50,18 @@
             max="1"
             step="0.01"
             bind:value={competence}
-            class="range range-secondary range-xs"
+            class="w-full accent-foreground/70"
           />
         </div>
       </div>
 
       <div
-        class="flex items-center justify-center bg-base-100/50 rounded-2xl p-8 border border-base-content/5"
+        class="flex items-center justify-center surface-lift p-8"
       >
         <div class="text-center">
           <div
             class="text-6xl font-black tracking-tighter mb-1 font-display"
-            style="color: oklch(from var(--color-primary) l c h / {trustScore})"
+            style="color: oklch(from var(--primary) l c h / {trustScore})"
           >
             {trustScore}
           </div>

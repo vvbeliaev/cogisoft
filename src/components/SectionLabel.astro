@@ -1,0 +1,18 @@
+---
+/**
+ * SectionLabel — Vercel × IBM × Raycast mono meta-label.
+ * Use at the top of every major section: "— 01 / thinking"
+ * See /DESIGN.md § Character primitives.
+ */
+interface Props {
+  index?: string;
+  text: string;
+  accent?: boolean;
+}
+
+const { index, text, accent = false } = Astro.props;
+---
+
+<div class={accent ? "label-accent" : "label-mono"}>
+  — {index ? `${index} / ` : ""}{text}
+</div>
