@@ -19,8 +19,8 @@ COPY public ./public
 
 RUN pnpm build
 
-# Drop dev dependencies for the runtime image
-RUN pnpm prune --prod
+# Deploy only prod dependencies (resolves pnpm symlink issues in multi-stage builds)
+RUN pnpm deploy --filter=. --prod /prod
 
 # ---- Runtime stage ----
 FROM node:24-alpine AS runtime
@@ -32,7 +32,7 @@ ENV NODE_ENV=production \
     PORT=4321 \
     SQLITE_DB_PATH=/data/cogisoft.db
 
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /prod/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
 
