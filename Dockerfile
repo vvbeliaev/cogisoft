@@ -20,7 +20,7 @@ COPY public ./public
 RUN pnpm build
 
 # Deploy only prod dependencies (resolves pnpm symlink issues in multi-stage builds)
-RUN pnpm deploy --filter=. --prod /prod
+RUN pnpm deploy --filter=. --prod --legacy /prod
 
 # ---- Runtime stage ----
 FROM node:24-alpine AS runtime
