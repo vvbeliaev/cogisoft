@@ -86,12 +86,16 @@
     }
 
     void main() {
-      vec2  uv     = v_uv;
+      // v_uv matches u_mouse; texture uses flipped Y (browser bitmap vs GL upload)
+      vec2 uvMask = v_uv;
+      vec2 parallax = (u_mouse - vec2(0.5)) * 0.014 * (0.22 + 0.78 * u_has_mouse);
+      vec2 uvTex = vec2(v_uv.x, 1.0 - v_uv.y) + parallax;
+
       float t      = u_time;
       float aspect = u_res.x / u_res.y;
 
       /* ── Sample & luminance ───────────────────────────────────────────── */
-      vec4  raw = texture2D(u_tex, uv);
+      vec4  raw = texture2D(u_tex, uvTex);
       float lum = dot(raw.rgb, vec3(0.2126, 0.7152, 0.0722));
 
       /* ── B&W layer  (warm aged-paper tint, mild contrast) ─────────────── */
@@ -101,7 +105,7 @@
       /* ── Painted layer ─────────────────────────────────────────────────── */
       vec3 painted = palette(lum);
       // Brush-stroke texture via FBM bump
-      float brushTex = fbm(uv * 14.0 + vec2(t * 0.04, 0.0)) * 0.05 - 0.025;
+      float brushTex = fbm(uvMask * 14.0 + vec2(t * 0.04, 0.0)) * 0.05 - 0.025;
       painted = clamp(painted + brushTex, 0.0, 1.0);
 
       /* ── Reveal position ───────────────────────────────────────────────── */
@@ -111,7 +115,7 @@
       vec2 revealPt = mix(vec2(ix, iy), u_mouse, u_has_mouse);
 
       /* ── Distance (aspect-corrected) ───────────────────────────────────── */
-      vec2  d    = (uv - revealPt) * vec2(aspect, 1.0);
+      vec2  d    = (uvMask - revealPt) * vec2(aspect, 1.0);
       float dist = length(d);
 
       /* ── Organic edge via FBM ──────────────────────────────────────────── */
@@ -129,21 +133,36 @@
       /* ── Chromatic aberration at the transition ring ───────────────────── */
       float edgeZone = smoothstep(outerR + 0.02, innerR + 0.01, dist)
                      * smoothstep(innerR - 0.01, outerR + 0.02, dist);
-      float caAmt    = edgeZone * 0.006;
+      float caAmt    = edgeZone * 0.008;
       vec2  caDir    = normalize(d + 1e-5) * caAmt;
-      float rL = dot(texture2D(u_tex, uv + caDir).rgb,      vec3(0.2126, 0.7152, 0.0722));
-      float bL = dot(texture2D(u_tex, uv - caDir).rgb,      vec3(0.2126, 0.7152, 0.0722));
+      float rL = dot(texture2D(u_tex, uvTex + caDir).rgb, vec3(0.2126, 0.7152, 0.0722));
+      float bL = dot(texture2D(u_tex, uvTex - caDir).rgb, vec3(0.2126, 0.7152, 0.0722));
       vec3  bwCA = vec3(rL, lum, bL) * vec3(1.04, 1.00, 0.93);
 
       /* ── Compose ───────────────────────────────────────────────────────── */
       vec3 col = mix(bwCA, painted, mask);
 
+      /* ── Moving specular gleam (painted area only) ───────────────────── */
+      vec2 gleamCtr = vec2(
+        0.5 + 0.34 * sin(t * 0.35 + u_has_mouse * 1.7),
+        0.5 + 0.24 * cos(t * 0.28 - u_has_mouse * 1.1)
+      );
+      vec2 gd = (uvMask - gleamCtr) * vec2(aspect, 1.0);
+      float gleam = exp(-dot(gd, gd) * 11.0) * mask * (0.18 + 0.14 * u_has_mouse);
+      col += gleam * vec3(1.0, 0.94, 0.84);
+
+      /* ── Pulsing rim on BW / color boundary ──────────────────────────── */
+      float rimPulse = edgeZone
+        * (0.52 + 0.48 * sin(t * 3.6 + dist * 20.0))
+        * (0.15 + 0.85 * u_has_mouse);
+      col += rimPulse * vec3(1.0, 0.62, 0.42) * 0.38;
+
       /* ── Film grain ────────────────────────────────────────────────────── */
-      float grain = (hash(uv * 937.7 + fract(t * 0.4)) - 0.5) * 0.028;
+      float grain = (hash(uvMask * 937.7 + fract(t * 0.4)) - 0.5) * 0.028;
       col += grain;
 
       /* ── Vignette ──────────────────────────────────────────────────────── */
-      vec2  vc  = uv * 2.0 - 1.0;
+      vec2  vc  = uvMask * 2.0 - 1.0;
       float vig = 1.0 - smoothstep(0.55, 1.4, length(vc * vec2(0.7, 0.85)));
       col *= 0.60 + 0.40 * vig;
 
@@ -236,7 +255,7 @@
     hasMousFloat += ((hasMouse ? 1 : 0) - hasMousFloat) * 0.04;
 
     // Resize canvas to device pixel ratio
-    const dpr = Math.min(window.devicePixelRatio ?? 1, 2);
+    const dpr = Math.min(window.devicePixelRatio ?? 1, 2.5);
     const rect = canvas.getBoundingClientRect();
     const w = Math.round(rect.width * dpr);
     const h = Math.round(rect.height * dpr);
