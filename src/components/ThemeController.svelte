@@ -2,11 +2,19 @@
   const LIGHT_THEME = "LIGHT";
   const DARK_THEME = "DARK";
 
-  let selectedDark = $state(false);
+  function readStoredDark(): boolean {
+    if (typeof localStorage === "undefined") return false;
+    try {
+      return localStorage.getItem("theme") === DARK_THEME;
+    } catch {
+      return false;
+    }
+  }
+
+  let selectedDark = $state(readStoredDark());
 </script>
 
 <script lang="ts">
-  import { onMount } from "svelte";
   import Sun from "~icons/ph/sun-duotone";
   import Moon from "~icons/ph/moon-duotone";
 
@@ -17,11 +25,6 @@
   const { expanded = false }: Props = $props();
 
   const themeLabel = $derived(selectedDark ? "Dark mode" : "Light mode");
-
-  onMount(() => {
-    const theme = localStorage.getItem("theme");
-    selectedDark = theme === DARK_THEME;
-  });
 
   $effect(() => {
     const nextTheme = selectedDark ? DARK_THEME : LIGHT_THEME;

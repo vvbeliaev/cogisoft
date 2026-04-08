@@ -29,8 +29,14 @@ const { path = "/", title = "Cogito Software" }: Props = Astro.props;
     <title>{title}</title>
 
     <script is:inline>
-      const theme = localStorage.getItem("theme") || "LIGHT";
-      document.documentElement.setAttribute("data-theme", theme);
+      (function () {
+        function applyStoredTheme() {
+          const theme = localStorage.getItem("theme") || "LIGHT";
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+        applyStoredTheme();
+        document.addEventListener("astro:after-swap", applyStoredTheme);
+      })();
     </script>
 
     <ClientRouter />
