@@ -58,5 +58,17 @@
     "link": "https://hackseeker.com",
     "image": "../assets/labs/hackseeker.png",
     "color": "from-red-500 to-orange-400"
+  },
+  {
+    "slug": "llmagent",
+    "featured": false,
+    "deprecated": false,
+    "title": "LLMAgent.ru",
+    "priority": 5,
+    "description": "Enterprise self-hosted RAG system. Ingests corporate docs and answers employee queries via Bitrix24 integration.",
+    "tags": ["FastAPI", "Qdrant", "Elasticsearch", "Postgres"],
+    "link": "https://llmagent.ru",
+    "image": "../assets/labs/llmagent.png",
+    "color": "from-purple-500 to-indigo-400"
   }
 ]
